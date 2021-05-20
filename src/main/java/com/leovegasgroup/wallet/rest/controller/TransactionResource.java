@@ -5,7 +5,6 @@ import com.leovegasgroup.wallet.config.Dashboard;
 import com.leovegasgroup.wallet.domain.Transaction;
 import com.leovegasgroup.wallet.rest.error.BadRequestAlertException;
 import com.leovegasgroup.wallet.rest.util.HeaderUtil;
-import com.leovegasgroup.wallet.rest.util.ResponseUtil;
 import com.leovegasgroup.wallet.service.TransactionService;
 import com.leovegasgroup.wallet.service.dto.TransactionDTO;
 import org.slf4j.Logger;
@@ -46,7 +45,7 @@ public class TransactionResource {
         log.debug("REST request to save Transaction : {}", transactionDTO);
         if (transactionDTO.getId() == null) {
             BadRequestAlertException exception = new BadRequestAlertException("A new transaction cannot have a null ID", ENTITY_NAME, "id-null");
-            return new ResponseEntity(exception.toString(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(exception.toString(), HttpStatus.BAD_REQUEST);
         }
         try {
             transactionService.run(transactionDTO);
@@ -54,9 +53,9 @@ public class TransactionResource {
                     .noContent()
                     .headers(HeaderUtil.createEntityCreationAlert(Dashboard.applicationName, true, ENTITY_NAME, transactionDTO.getId().toString()))
                     .build();
-        }catch (BadRequestAlertException ex){
-            return new ResponseEntity(ex.toString() ,
-                    HeaderUtil.createEntityCreationAlert(Dashboard.applicationName, true,ENTITY_NAME,transactionDTO.getId().toString()),HttpStatus.BAD_REQUEST);
+        } catch (BadRequestAlertException ex) {
+            return new ResponseEntity(ex.toString(),
+                    HeaderUtil.createEntityCreationAlert(Dashboard.applicationName, true, ENTITY_NAME, transactionDTO.getId().toString()), HttpStatus.BAD_REQUEST);
 
         }
 

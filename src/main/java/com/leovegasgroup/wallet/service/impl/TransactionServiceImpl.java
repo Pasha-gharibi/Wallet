@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Service Implementation for managing {@link Transaction}.
@@ -31,6 +32,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
 
     private final AccountRepository accountRepository;
+
+    Lock lock = new java.util.concurrent.locks.ReentrantLock();
 
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   AccountRepository accountRepository) {
@@ -47,10 +50,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void run(TransactionDTO transactionDTO) throws BadRequestAlertException {
-        if (transactionDTO.getType() == TransactionType.Credit) {
-            credit(transactionDTO);
-        } else {
-            debit(transactionDTO);
+        try {
+            lock.lock();
+            if (transactionDTO.getType() == TransactionType.Credit) {
+                credit(transactionDTO);
+            } else {
+                // transactionDTO.getType() == TransactionType.Debit
+                debit(transactionDTO);
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -81,6 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void credit(TransactionDTO transactionDTO) {
+
         Account account = accountRepository.get(transactionDTO.getPlayerId());
         account.setBalance(account.getBalance().add(transactionDTO.getAmount()));
         account.setLastModified(ZonedDateTime.now());
