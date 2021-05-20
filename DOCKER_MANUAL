@@ -1,0 +1,5 @@
+docker build -t springio/gs-spring-boot-docker .
+
+
+-- for redis docker
+docker run --name recorder-redis -p 6379:6379 -d redis:alpine
