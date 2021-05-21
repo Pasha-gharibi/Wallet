@@ -15,7 +15,7 @@ import java.util.List;
  * Service Implementation for managing {@link Player}.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class PlayerServiceImpl implements PlayerService {
 
     private final Logger log = LoggerFactory.getLogger(PlayerServiceImpl.class);
@@ -27,7 +27,6 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Player> findAll() {
         log.debug("Request to get all Players");
         return playerRepository.findAll();

@@ -7,6 +7,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceUnit;
 
 public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
@@ -14,14 +15,14 @@ public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
 
-    public void add(Transaction transaction) throws ConstraintViolationException {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        if (!ObjectUtils.isEmpty(transaction) && !entityManager.contains(transaction)) {
-            entityManager.persist(transaction);
-            entityManager.flush();
-        }
-        entityManager.getTransaction().commit();
-    }
+//    public void save(Transaction transaction) throws ConstraintViolationException {
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        entityManager.getTransaction().begin();
+//        if (!ObjectUtils.isEmpty(transaction) && !entityManager.contains(transaction)) {
+//            entityManager.persist(transaction);
+//        }
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
+//    }
 
 }

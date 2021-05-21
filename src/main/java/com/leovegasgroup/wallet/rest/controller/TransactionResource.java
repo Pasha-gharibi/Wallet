@@ -1,6 +1,5 @@
 package com.leovegasgroup.wallet.rest.controller;
 
-import com.leovegasgroup.wallet.cache.domain.Account;
 import com.leovegasgroup.wallet.config.Dashboard;
 import com.leovegasgroup.wallet.domain.Transaction;
 import com.leovegasgroup.wallet.rest.error.BadRequestAlertException;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -60,30 +57,6 @@ public class TransactionResource {
         }
 
     }
-
-
-    @ExceptionHandler(BadRequestAlertException.class)
-    public ResponseEntity<Object> handle(Exception ex,
-                                         HttpServletRequest request, HttpServletResponse response) {
-        if (ex instanceof NullPointerException) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
-    /**
-     * {@code GET  /transactions/balance/:playerId} : get the "playerId" player.
-     *
-     * @param playerId the id of the user to retrieve it's account balance.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Account or with a empty body.
-     */
-    @GetMapping("/transactions/balance/{playerId}")
-    public ResponseEntity<Account> getBalance(@PathVariable Long playerId) {
-        log.debug("REST request to get Balance for Player : {}", playerId);
-        Account account = transactionService.balance(playerId);
-        return ResponseEntity.ok(account);
-    }
-
 
     /**
      * {@code GET  /transactions/history/:playerId} : get the "playerId" player.

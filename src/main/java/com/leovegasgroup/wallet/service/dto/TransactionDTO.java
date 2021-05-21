@@ -51,6 +51,26 @@ public class TransactionDTO implements Serializable {
         this.playerId = playerId;
     }
 
+    public TransactionDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public TransactionDTO amount(BigDecimal amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public TransactionDTO type(TransactionType type) {
+        this.type = type;
+        return this;
+    }
+
+    public TransactionDTO player(Long playerId) {
+        this.setPlayerId(playerId);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,10 +96,10 @@ public class TransactionDTO implements Serializable {
     @Override
     public String toString() {
         return "TransactionDTO{" +
-            "id=" + getId() +
-            ", amount=" + getAmount() +
-            ", type='" + getType() + "'" +
-            ", playerId=" + getPlayerId() +
-            "}";
+                "id=" + getId() +
+                ", amount=" + getAmount() +
+                ", type='" + getType() + "'" +
+                ", playerId=" + getPlayerId() +
+                "}";
     }
 }
